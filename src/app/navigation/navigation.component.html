@@ -1,0 +1,29 @@
+<div class="main-container">
+    <header class="header-4 nav-background" #headerNavs>
+      <div class="branding">
+        <a class="nav-link">
+          <span class="logo dell-emc-logo"></span>
+        </a>
+      </div>
+      <div class="header-actions" id="header-actions">
+        <a href="javascript://" class="nav-link nav-icon header-icon">
+          <clr-icon shape="cog"></clr-icon>
+        </a>
+        <a href="javascript://" class="nav-link nav-icon header-icon" (click)="logout()">
+          <clr-icon shape="power"></clr-icon>
+        </a>
+      </div>
+    </header>
+
+    <div class="content-container">
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+      <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapsed">
+        <a clrVerticalNavLink routerLink="/search" routerLinkActive="active">
+          <clr-icon clrVerticalNavIcon shape="search"></clr-icon>
+          Search
+        </a>
+      </clr-vertical-nav>
+    </div>
+  </div>

@@ -1,0 +1,33 @@
+
+<div class="login-wrapper">
+    <form class="login" [formGroup]="loginForm" (ngSubmit)="login()">
+        <section class="title">
+            <h3 class="welcome">Welcome to</h3>
+            Avamar Log Search
+        </section>
+        <div class="login-group">
+            <clr-select-container>
+                <select clrSelect name="type" formControlName="type">
+                    <option value="avamar">Avamar Administrator</option>
+                    <!-- <option value="vcenter">vCenter</option> -->
+                </select>
+            </clr-select-container>
+            <clr-input-container>
+                <input type="text" name="username" clrInput placeholder="Username" formControlName="username" />
+            </clr-input-container>
+            <clr-password-container>
+                <input type="password" name="password" clrPassword placeholder="Password"  formControlName="password"/>
+            </clr-password-container>
+            <clr-checkbox-wrapper>
+                <label>Remember me</label>
+                <input type="checkbox" name="rememberMe" clrCheckbox formControlName="rememberMe"/>
+            </clr-checkbox-wrapper>
+            <button type="submit" class="btn btn-outline" [disabled]="!loginForm.valid" style="margin-top:0px;">
+              Login
+              <span class="spinner spinner-inline" *ngIf="loading">
+                  Loading...
+              </span>
+          </button>
+        </div>
+    </form>
+  </div>

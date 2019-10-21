@@ -1,0 +1,98 @@
+<!-- {{keyWords}} - {{index}} -->
+<!-- <button routerLink="/home/details">go to details</button> -->
+<ng-container>
+    <b>{{length}}</b> results ({{elapsed / 1000}} seconds),
+    Current page <span class="badge">{{paginator.pageIndex + 1}}</span>
+    <span class="spinner spinner-inline" *ngIf="loading">
+        Loading...
+    </span>
+</ng-container>
+
+<div class="clr-row">
+
+    <div class="clr-col-12 clr-col-sm-12">
+        <div class="card">
+            <div class="card-footer">
+                <div class="clr-row clr-justify-content-between">
+                    <div class="clr-col-3">
+                        <button class="btn btn-primary" [disabled]="!paginator.hasPreviousPage()"
+                        (click)="paginator.previousPage()">
+                            <clr-icon shape="angle" dir="left"></clr-icon>Previous
+                        </button>
+                    </div>
+                    <div class="clr-col-6">
+
+                    </div>
+                    <div class="clr-col-3" style="display: contents;">
+                        <button class="btn btn-primary" [disabled]="!paginator.hasNextPage()"
+                        (click)="paginator.nextPage()">Next<clr-icon shape="angle" dir="right">
+                            </clr-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="clr-row">
+    <div class="clr-col-12 clr-col-sm-12" *ngFor="let logInfo of logInfos">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">{{logInfo.logPath}}</h4>
+                <p class="card-text" [innerHTML]=" logInfo.message | slice:0:300 | highlight : keyWords | safeHtml"></p>
+            </div>
+            <div class="card-footer">
+                <a class="card-link" style="cursor: pointer" (click)="viewLog(logInfo)" >view log</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clr-row">
+    <div class="clr-col-12 clr-col-sm-12">
+        <mat-paginator [length]="length" #paginator
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="showLog" [clrModalSize]="'xl'" [clrModalClosable]="false">
+    <h3 class="modal-title">Log</h3>
+    <div class="modal-body">
+        <clr-stack-view id="logs">
+            <clr-stack-block class="log" [clrSbExpanded]="logExpanded" >
+                <clr-stack-label>
+                        Detail
+                </clr-stack-label>
+                <clr-stack-block [innerHTML]="logDetail | highlight : searchText | safeHtml"></clr-stack-block>
+            </clr-stack-block>
+      
+        </clr-stack-view>
+    </div>
+    <div class="modal-footer">
+        <div class="activity-log-search">
+            <input type="text" id="activity-log-search" [ngModel]="searchText" (keyup)="search($event.target.value)">
+            <clr-icon shape="dell-search" size="20"></clr-icon>
+        </div>
+        <div style="line-height: 1.5rem" *ngIf="elements && elements.length > 0">
+            {{focusIndex + 1}}/{{elements.length}}
+        </div>
+        <button class="btn btn-primary" (click)="previous()" [disabled]="!elements || elements.length == 0">
+            Previous
+        </button>
+        <button class="btn btn-primary" (click)="next()" [disabled]="!elements || elements.length == 0">
+           Next
+        </button>
+        <button *ngIf="logExpanded" type="button" class="btn btn-primary"  (click)="logExpanded=!logExpanded">Collapse All </button>
+        <button *ngIf="!logExpanded"  type="button" class="btn btn-primary" (click)="logExpanded=!logExpanded">Expand All </button>
+        <button type="button" class="btn btn-primary" (click)="downloadLog()">Download</button>
+        <button type="button" class="btn btn-primary" (click)="moreDetail()">moreDetail</button>
+        <button type="button" class="btn btn-primary" (click)="closeLog()">Ok</button>
+    </div>
+</clr-modal>
